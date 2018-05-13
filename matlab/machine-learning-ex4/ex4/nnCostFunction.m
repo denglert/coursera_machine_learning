@@ -73,8 +73,10 @@ X = [ones(m,1) X];
 
 %%%% - Dimensions:
 %%%   -      X:  m*n1
+%%%   -      y:  m*1
 %%%   -     a1:  n1*m
 %%%   - Theta1: n2*n1
+%%%   - Theta2: n3*(n2+1)
 %%%   -     z2: (n2  )*m 
 %%%   -     a2: (n2+1)*m
 %%%   -     z3:     n3*m
@@ -84,11 +86,11 @@ J = 0;
 
 a1 = X.';
 
-z2 = Theta1*a1
+z2 = Theta1*a1;
 a2 = sigmoid(z2);
 a2 = [ones(1, size(a2, 2)) ; a2];
 
-z3 = Theta2*a2
+z3 = Theta2*a2;
 a3 = sigmoid(z3);
 
 h = a3.';
@@ -103,8 +105,8 @@ for i = 1:m
 end
 
 
-size(Theta1)
-size(Theta2)
+size(Theta1);
+size(Theta2);
 Theta1sqr = Theta1.^2;
 Theta2sqr = Theta2.^2;
 
@@ -117,17 +119,59 @@ J = cost + cost_regularized;
 %%%% ---- Backpropagation ---- %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-delta3 = a3 - y
+Delta1 = zeros(size(Theta1));
+Delta2 = zeros(size(Theta2));
 
-delta2 = Theta2'*delta3 .* sigmoidGradient(z2)
-
-Delta2 = zeros(size(Theta1))
-Delta3 = zeros(size(Theta2))
 
 %%% --- Looping over the samples
+for i = 1:m
+
+	% - Create y_target vector
+	y_target = zeros(num_labels,1);
+
+	%size(y_target)
+	c = y(i);
+	y_target(c) = 1;
+
+	% - Gradient at layer 3
+	% - delta3: n3*1
+	delta3 = h(i,:)' - y_target;
+
+	% - Gradient at layer 2
+	% - delta2: (n2+1)*1
+	%size(Theta2)
+	%size(delta3)
+	%size(y_target)
+	%size(h(i,:)')
+	
+	size(Theta2');	
+	size(delta3);
+	size(sigmoidGradient(z2(:,i)));
+	%size(h(i,:)')	
+	%size()	
+	
+	delta2 = Theta2'*delta3;
+	delta2 = delta2(2:end) .* sigmoidGradient(z2(:,i));
+
+	Delta1 = Delta1 + delta2*a1(:,i)';
+	Delta2 = Delta2 + delta3*a2(:,i)';
+
+end
 
 
-Delta2 = Delta2 +  
+Theta1_grad = Delta1/m;
+Theta2_grad = Delta2/m;
+
+
+%%% --- Adding the regularization term
+reg_term1 = zeros(size(Theta1));
+reg_term2 = zeros(size(Theta2));
+
+reg_term1(:,2:end) = Theta1(:,2:end);
+reg_term2(:,2:end) = Theta2(:,2:end);
+
+Theta1_grad = Theta1_grad + (lambda/m)*reg_term1;
+Theta2_grad = Theta2_grad + (lambda/m)*reg_term2;
 
 
 % -------------------------------------------------------------
