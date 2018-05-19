@@ -99,12 +99,9 @@ while ~isempty(email_contents)
 
 
 
-
-
-
-
-
-
+	word_index = find(strcmp([vocabList(:)], str));
+   fprintf('%d', word_index);
+	word_indices = [word_indices ; word_index];
 
     % =============================================================
 
