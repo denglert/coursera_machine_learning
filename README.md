@@ -13,7 +13,7 @@ https://www.coursera.org/learn/machine-learning
 - [Multi-class one-vs-all logistic regression model][multi-class-logitreg]
 
 Try these with
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/denglert/coursera-machine-learning/master)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/denglert/coursera_machine_learning/master)
 
 
 [multi-class-logitreg]: ./python/Week_4_Neural_Networks/exercise/Multi_class_logistic_regression.ipynb
