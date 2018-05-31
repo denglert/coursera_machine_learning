@@ -1,0 +1,11 @@
+name: root
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - numpy
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - pandas
+  - bokeh
